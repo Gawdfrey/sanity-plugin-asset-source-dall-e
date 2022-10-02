@@ -1,28 +1,13 @@
-import {createPlugin} from 'sanity'
+/* eslint-disable no-console */
+import { createPlugin } from "sanity";
 
-interface MyPluginConfig {
-  /* nothing here yet */
+interface gpt3PluginConfig {
+  apiKey: string;
 }
 
-/**
- * ## Usage in sanity.config.ts (or .js)
- *
- * ```
- * import {createConfig} from 'sanity'
- * import {myPlugin} from 'sanity-plugin-gpt3'
- *
- * export const createConfig({
- *     /...
- *     plugins: [
- *         myPlugin()
- *     ]
- * })
- * ```
- */
-export const myPlugin = createPlugin<MyPluginConfig | void>((config = {}) => {
-  // eslint-disable-next-line no-console
-  console.log('hello from sanity-plugin-gpt3')
+export const gpt3Plugin = createPlugin<gpt3PluginConfig>((config) => {
+  console.log(config);
   return {
-    name: 'sanity-plugin-gpt3',
-  }
-})
+    name: "sanity-plugin-gpt3",
+  };
+});
