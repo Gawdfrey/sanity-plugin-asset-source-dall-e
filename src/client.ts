@@ -1,24 +1,34 @@
 /* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import axios from "axios";
-import type { CompletePromptResponse, EditPromptResponse } from "./types";
+import type {
+  GenerateImageResponse,
+  CreateVariationResponse,
+  GenerateImage,
+  Size,
+  Format,
+  CreateVariation,
+} from "./types";
 
 const axiosClient = axios.create({
-  baseURL: "https://api.openai.com/v1",
+  baseURL: "https://api.openai.com/v1/images",
 });
 
-export function completePrompt(
+export async function generateImage(
   apiKey: string,
-  prompt: string
-): Promise<CompletePromptResponse> {
-  return axiosClient
+  prompt: string,
+  numberOfImages = 1,
+  size: Size = "256x256",
+  response_format: Format = "url"
+): Promise<GenerateImageResponse> {
+  const { data } = await axiosClient
     .post(
-      "/completions",
-      {
-        model: "text-davinci-002",
+      "/generations",
+      <GenerateImage>{
         prompt,
-        max_tokens: 100,
-        temperature: 0.9,
+        numberOfImages,
+        size,
+        response_format,
       },
       {
         headers: {
@@ -26,30 +36,31 @@ export function completePrompt(
         },
       }
     )
-    .then((response) => response.data)
     .catch((error) => error.response.data);
+  return data;
 }
 
-export function editPrompt(
+export async function createVariation(
   apiKey: string,
-  input: string,
-  instruction: string
-): Promise<EditPromptResponse> {
-  return axiosClient
-    .post(
-      "/edits",
-      {
-        model: "text-davinci-002",
-        input,
-        instruction,
-        temperature: 0.9,
+  image: Blob,
+  n = 1,
+  size: Size = "256x256",
+  response_format: Format = "b64_json"
+): Promise<CreateVariationResponse> {
+  const { data } = await axiosClient.post(
+    "/variations",
+    <CreateVariation>{
+      image,
+      n,
+      response_format,
+      size,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "multipart/form-data",
       },
-      {
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-        },
-      }
-    )
-    .then((response) => response.data)
-    .catch((error) => error.response.data);
+    }
+  );
+  return data;
 }

@@ -1,13 +1,21 @@
-/* eslint-disable no-console */
-import { createPlugin } from "sanity";
+import { AssetSource, definePlugin } from "sanity";
+import GenerateVariantsProvider from "./components/GenerateVariants";
+import Icon from "./Icon";
 
-interface gpt3PluginConfig {
-  apiKey: string;
-}
+export const dallEImageAssetSource: AssetSource = {
+  name: "dall-e",
+  title: "DALL·E",
+  icon: Icon,
+  component: GenerateVariantsProvider,
+};
 
-export const gpt3Plugin = createPlugin<gpt3PluginConfig>((config) => {
-  console.log(config);
+export const dallEAssetSourcePlugin = definePlugin(() => {
   return {
-    name: "sanity-plugin-gpt3",
+    name: "sanity-plugin-asset-source-dall-e",
+    form: {
+      image: {
+        assetSources: [dallEImageAssetSource],
+      },
+    },
   };
 });
