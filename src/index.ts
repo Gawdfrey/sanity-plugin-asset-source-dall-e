@@ -1,12 +1,12 @@
 import { AssetSource, definePlugin } from "sanity";
-import GenerateVariantsProvider from "./components/GenerateVariants";
+import ModalWrapper from "./components/Modal";
 import Icon from "./Icon";
 
 export const dallEImageAssetSource: AssetSource = {
   name: "dall-e",
   title: "DALL·E",
   icon: Icon,
-  component: GenerateVariantsProvider,
+  component: ModalWrapper,
 };
 
 export const dallEAssetSourcePlugin = definePlugin(() => {

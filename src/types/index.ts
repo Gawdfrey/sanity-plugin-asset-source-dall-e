@@ -16,13 +16,6 @@ export interface GenerateImage {
   response_format?: Format;
 }
 
-export interface GenerateImageResponse {
-  created: number;
-  data: {
-    url: string;
-  }[];
-}
-
 export interface CreateVariation {
   image: Blob;
   n?: number;
@@ -30,12 +23,11 @@ export interface CreateVariation {
   response_format?: Format;
 }
 
-export interface CreateVariationResponse {
+export interface APIResponse {
   data: {
     b64_json: string;
   }[];
 }
-[];
 
 export interface DALLEFormEvent extends FormEvent<HTMLFormElement> {
   target: HTMLFormElement & {
@@ -44,6 +36,9 @@ export interface DALLEFormEvent extends FormEvent<HTMLFormElement> {
     };
     numberOfImages: {
       value: number;
+    };
+    prompt: {
+      value: string;
     };
   };
 }
@@ -54,3 +49,18 @@ export interface ResponseError {
   param: string | null;
   type: string;
 }
+
+export const imageSizes = [
+  {
+    value: ImageSize.Small,
+    title: "256x256",
+  },
+  {
+    value: ImageSize.Medium,
+    title: "512x512",
+  },
+  {
+    value: ImageSize.Large,
+    title: "1024x1024",
+  },
+];
